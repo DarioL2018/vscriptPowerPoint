@@ -50,6 +50,7 @@ Sub main()
 			If oShp.HasTextFrame Then
 				If oShp.TextFrame.HasText Then
 					'WriteLine oShp.TextFrame.TextRange.Text
+					oShp.TextFrame2.AutoSize = 2
 					Set oTxtRng = oShp.TextFrame.TextRange
 					if Len(oTxtRng) >0 then
 						Set oTmpRng = oTxtRng.Replace(wordToReplace, replacement, , , True)
@@ -67,7 +68,7 @@ Sub main()
 	
 		objPresentation.PrintOptions.RangeType = 4 
 		set printVar=objPresentation.PrintOptions.Ranges.Add(oSld.SlideIndex,oSld.SlideIndex)
-		objPresentation.ExportAsFixedFormat2 objFso.GetParentFolderName(inputFile) _
+		objPresentation.ExportAsFixedFormat objFso.GetParentFolderName(inputFile) _
 		& "/" & oSld.SlideIndex &".pdf", 2, , , , , , printVar, 4
 	Next
 	objPresentation.Save
