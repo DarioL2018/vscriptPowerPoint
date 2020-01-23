@@ -1,18 +1,9 @@
-Option Explicit
-
-Main
-
-Sub WriteLine ( strLine )
-    'WScript.Stdout.WriteLine strLine
-	WScript.Echo strLine
-End Sub
-
-Sub main()
 	Const ppLayoutText = 2
 	'Parameters
 	Dim inputFile
 	Dim wordToReplace
 	Dim replacement
+	Dim urlPdf
 	
 	Dim pptObj
 	Dim objSlide 
@@ -22,24 +13,21 @@ Sub main()
 	Dim printVar 
 	Dim oTmpRng
 	Dim oTxtRng
-	Dim urlPdf
-	Dim oSld, oShp, oNod
+	Dim oTmpRng2
+	Dim oTxtRng2
+	
 	'P1 -> PATH
 	'P2 -> WordToReplace
 	'P3 -> Replacement
-	If WScript.Arguments.Count <> 4 Then
-		WriteLine "You need to specify input and output files."
-		WScript.Quit
-	End If
-
-	inputFile = WScript.Arguments(0)
-	wordToReplace = WScript.Arguments(1)
-	replacement = WScript.Arguments(2)
-	urlPdf = WScript.Arguments(3)
+	inputFile = %inputFileVar%
+	wordToReplace = %WordToReplace%
+	replacement = %Replacement%
+	urlPdf = %urlPdf%
+	
 	Set objFso = CreateObject("Scripting.FileSystemObject")
 	'Validate path
 	If Not objFso.FileExists( inputFile ) Then
-		WriteLine "Unable to find your input file " & inputFile
+		WScript.Echo "Unable to find your input file " & inputFile
 		WScript.Quit
 	End If
 
@@ -79,7 +67,6 @@ Sub main()
 		& "/" & oSld.SlideIndex &".pdf", 2, , , , , , printVar, 4
 	Next
 	'objPresentation.Save
+    WScript.Echo "Process finished sucessfully!"
 	pptObj.Quit
-	WriteLine "Process finished sucessfully!"
-	set pptObj=nothing
-End Sub
+	set pptObj = nothing
