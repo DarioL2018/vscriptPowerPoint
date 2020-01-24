@@ -60,13 +60,25 @@
 				Next
 			End If
 		Next
+	Next
+	tempFile=objFso.GetParentFolderName(inputFile) & "\" & "_temp.pptx" 
+	objPresentation.SaveAs tempFile 
+	pptObj.Quit
+	set pptObj=nothing
 	
+	set pptObj= CreateObject("PowerPoint.Application")
+	
+	Set objPresentation = pptObj.Presentations.Open(tempFile,,,False)
+	For Each oSld In objPresentation.Slides 
 		objPresentation.PrintOptions.RangeType = 4 
 		set printVar=objPresentation.PrintOptions.Ranges.Add(oSld.SlideIndex,oSld.SlideIndex)
 		objPresentation.ExportAsFixedFormat urlPdf _
 		& "/" & oSld.SlideIndex &".pdf", 2, , , , , , printVar, 4
 	Next
-	'objPresentation.Save
-    WScript.Echo "Process finished sucessfully!"
+	For Each Presentation In pptObj.Presentations
+		Presentation.Close
+	Next
 	pptObj.Quit
-	set pptObj = nothing
+	set pptObj=nothing
+	objFso.DeleteFile tempFile, True
+	WriteLine "Process finished sucessfully!"
